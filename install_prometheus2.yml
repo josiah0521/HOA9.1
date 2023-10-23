@@ -1,0 +1,10 @@
+  - name: prometheus args   
+    template: 
+      src: prometheus.j2
+      dest: /etc/default/prometheus 
+      mode: 0644
+      owner: root
+      group: root
+    notify: restart_prometheus 
+
+  - name: prometheus configuration file

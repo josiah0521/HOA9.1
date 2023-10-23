@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+
+  - name: cache update for CentOS to enable prometheus
+    yum:
+      name: epel-release
+      state: latest
+
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: prometheus-Ubuntu
+  become: true
+  roles:
+    - prometheus-Ubuntu
+
+- hosts: prometheus-CentOS
+  become: true
+  roles:
+    - prometheus-CentOS

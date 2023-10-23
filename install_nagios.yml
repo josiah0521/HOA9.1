@@ -1,0 +1,82 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+
+    - name: Update Repository Index Ubuntu
+      tags: always
+      apt:
+        update_cache: yes
+
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
+
+
+    - name: Update Repository Index CentOS
+      tags: always
+      yum:
+        update_cache: yes
+
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+
+
+    - name: cache update for CentOS to enable nagios
+      yum:
+        name: epel-release
+        state: latest
+
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+
+
+    - name: Install Nagios for Ubuntu
+      package:
+        name:
+          - nagios4
+          - nagios-plugins
+
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Install Nagios for CentOS
+      yum:
+        name:
+          - nagios
+          - nagios-plugins-all
+
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+
+    - name: Nagios Initialization for Ubuntu
+      service:
+        name: nagios4
+        state: started
+        enabled: yes
+
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Nagios Initialization for CentOS
+      service:
+        name: nagios
+        state: started
+        enabled: yes
+
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: nagios-Ubuntu
+  become: true
+  roles:
+    - nagios-Ubuntu
+
+- hosts: nagios-CentOS
+  become: true
+  roles:
+    - nagios-CentOS

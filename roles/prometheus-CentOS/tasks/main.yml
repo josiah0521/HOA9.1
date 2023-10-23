@@ -1,0 +1,30 @@
+---
+- name: Install Prometheus
+  become: yes
+  become_user: root
+  block:
+
+
+    - name: Add Prometheus YUM repository for CentOS
+      yum_repository:
+        name: prometheus
+        baseurl: https://packagecloud.io/prometheus-rpm/release/el/{{ ansible_distribution_major_version }}/$basearch
+        description: Prometheus repository
+        gpgcheck: no
+      when: ansible_distribution == "CentOS"
+
+    - name: Install Prometheus in CentOS
+      package:
+        name: prometheus
+        state: present
+      when: ansible_distribution == "CentOS"
+
+    - name: start prometheus
+      systemd:
+        name: prometheus
+        state: started
+        enabled: yes
+
+      changed_when: false
+      when: ansible_distribution == "CentOS"
+

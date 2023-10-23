@@ -1,0 +1,11 @@
+[all]
+192.168.56.101 ansible_python_interpreter=/usr/bin/python3
+192.168.56.102 ansible_python_interpreter=/usr/bin/python3
+192.168.56.105 ansible_python_interpreter=/usr/bin/python3
+
+[prometheus-Ubuntu]
+192.168.56.101 ansible_python_interpreter=/usr/bin/python3
+192.168.56.102 ansible_python_interpreter=/usr/bin/python3
+
+[prometheus-CentOS]
+192.168.56.105 ansible_python_interpreter=/usr/bin/python3

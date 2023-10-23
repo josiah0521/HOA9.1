@@ -1,0 +1,24 @@
+---
+- name: Install Prometheus for Ubuntu
+  become:
+  become_user: root
+  block:
+
+    - name: update and install prometheus for Ubuntu
+      apt:
+        name: prometheus
+        state: latest
+        update_cache: yes
+        cache_valid_time: 3600
+
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
+
+    - name: start prometheus
+      systemd:
+        name: prometheus
+        state: started
+        enabled: yes
+
+      changed_when: false
+      when: ansible_distribution == "Ubuntu"
